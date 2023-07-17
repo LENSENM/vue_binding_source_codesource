@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myVue</title>
+</head>
+
+<div id="app">
+    <h1>{{message}}</h1>
+    <h1>{{count}}</h1>
+    <input type="text" v-model="message">
+    <input type="text" v-model="count">
+    <button v-on:click="clickHandle">增加</button>
+</div>
+
+<body>
+
+</body>
+<script type="module">
+
+    import { myVue } from "./myVue.js"
+
+
+    // 实例化
+    let vm = new myVue({
+        el: document.querySelector("#app"),
+        data() {
+            return {
+                message: 10,
+                count: 0,
+                obj: {
+                    a: {
+                        b: {
+                            c: 0
+                        }
+                    }
+                }
+            }
+        },
+        methods: {
+            clickHandle() {
+                this.count++
+            }
+        }
+    })
+
+    vm.count = 20;
+
+
+</script>
+</html>

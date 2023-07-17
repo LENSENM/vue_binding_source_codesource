@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+
+    //  1. 获取对象的值
+    let initData = {
+        count: 0
+    }
+
+    let deps = null;
+
+    // proxy 拦截
+    let handler = () => {
+        let Collect = [];  // 收集依赖 set时 触发函数 发送通知获取更改后的数据 
+        return {
+            get(target, key) {
+                if (deps) Collect.push(deps)
+                return Reflect.get(target, key)
+            },
+            set(target, key, value) {
+                Reflect.set(target, key, value);
+                Collect.forEach(item => item())
+            }
+        }
+    }
+
+    function walk(data, handler) {
+        if (typeof data !== 'object') return data;
+        for (const key in data) {
+            data[key] = walk(data[key], handler);
+        }
+        return new Proxy(data, handler())
+    }
+
+    let data = walk(initData, handler)
+
+    // 执行一个JS 触发render函数
+    // 在设置count的时候  获取count
+    const render = () => {
+        console.log("count", data.count)
+    }
+
+    function effect(fn) {
+        deps = fn;
+        fn();  //fn 进行调用 就会触发get
+        deps = null
+    }
+
+    effect(render)
+
+    data.count = 1;
+    data.count = 2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>
